@@ -9,7 +9,9 @@ Install [stack](https://docs.haskellstack.org/en/stable/README/)
 ```console
 $ nix-shell          # if you are using NixOS
 $ stack build
-$ stack exec poutro
+$ mkdir out/
+$ stack exec poutro names.txt out/
+$ ./render-video.sh
 ```
 ## Support
 
