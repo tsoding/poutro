@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# TODO: render-video.sh script parameters are not customizable (threads, fps, output folder, etc.)
+# TODO(#7): render-video.sh script parameters are not customizable (threads, fps, output folder, etc.)
 
 set -xe
 
