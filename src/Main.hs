@@ -10,7 +10,7 @@ frameFileNames prefix = map (\n -> prefix ++ show n ++ ".svg") [1 .. ]
 loadNamesFromFile :: FilePath -> IO [String]
 loadNamesFromFile fileName = lines <$> readFile fileName
 
--- TODO: poutro doesn't create the output folder if it doesn't exist
+-- TODO(#8): poutro doesn't create the output folder if it doesn't exist
 mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
   names <- loadNamesFromFile namesFileName
