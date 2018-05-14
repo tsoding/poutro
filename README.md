@@ -4,7 +4,7 @@
 
 ## Quick Start
 
-Install [stack](https://docs.haskellstack.org/en/stable/README/)
+Install [stack](https://docs.haskellstack.org/en/stable/README/) if you're not using [NixOS]
 
 ```console
 $ nix-shell               # if you are using NixOS
@@ -30,3 +30,4 @@ You can support my work via
 
 [tsoder]: http://github.com/tsoding/tsoder
 [tsoding]: https://www.twitch.tv/tsoding
+[NixOS]: https://nixos.org/
