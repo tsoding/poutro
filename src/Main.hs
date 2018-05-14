@@ -18,7 +18,7 @@ createMetaFile fileName frameCount fps =
 
 mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
-  display <- return $ defaultDisplay
+  display <- return defaultDisplay
   names   <- loadNamesFromFile namesFileName
   frames  <- return $ outroFromNames display names
 
@@ -27,10 +27,8 @@ mainWithArgs (namesFileName:outputFolder:_) = do
   createMetaFile (printf "%s/meta.js" outputFolder)
                  (length frames)
                  (displayFps display)
-  sequence_
-    $ map (uncurry saveFrame)
-    $ zip (frameFileNames $ printf "%s/" outputFolder)
-    $ frames
+  mapM_ (uncurry saveFrame)
+    $ zip (frameFileNames $ printf "%s/" outputFolder) frames
 mainWithArgs _ = error "Usage: ./poutro <names-file> <output-folder>"
 
 main :: IO ()

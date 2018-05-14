@@ -32,7 +32,7 @@ circleAt display (x, y) =
     S.docTypeSvg
       ! A.version "1.1"
       ! A.width (fromString $ show w)
-      ! A.height (fromString $ show h) $ do
+      ! A.height (fromString $ show h) $
         S.circle
           ! A.cx (fromString $ show x)
           ! A.cy (fromString $ show y)
@@ -40,13 +40,11 @@ circleAt display (x, y) =
           ! A.fill "red"
     where w = displayWidth display
           h = displayHeight display
-          r = (fromIntegral w) * 0.1
+          r = fromIntegral w * 0.1
 
 animateCircle :: Display -> Double -> [(Double, Double)]
-animateCircle display s =
-    map (\x -> (x, y))
-      $ map (+ x0)
-      $ map (* dx) [0.0 .. s / dt]
+animateCircle display s = map (\x -> (x * dx + x0, y))
+                              [0.0 .. s / dt]
     where r = w * 0.1
           x0 = r
           x1 = w - r
