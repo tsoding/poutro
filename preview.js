@@ -1,5 +1,5 @@
 (function() {
-    // TODO: Preview fps and frameCount are hardcoded
+    // TODO(#11): Preview fps and frameCount are hardcoded
     let fps = 30;
     let frameCount = 151;
     let previewElement = document.getElementById("preview");
