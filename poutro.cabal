@@ -63,6 +63,7 @@ executable poutro
   build-depends:       base >=4.9 && <4.10
                      , blaze-svg
                      , directory
+                     , hlint
   
   -- Directories containing source files.
   hs-source-dirs:      src
