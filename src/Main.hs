@@ -5,7 +5,7 @@ import           System.Environment
 import           Text.Printf
 
 frameFileNames :: String -> [String]
-frameFileNames prefix = map (\n -> prefix ++ show n ++ ".svg") [1 .. ]
+frameFileNames prefix = map (\n -> prefix ++ show n ++ ".svg") [0 .. ]
 
 loadNamesFromFile :: FilePath -> IO [String]
 loadNamesFromFile fileName = lines <$> readFile fileName

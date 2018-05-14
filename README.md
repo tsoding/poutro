@@ -13,6 +13,13 @@ $ mkdir out/
 $ stack exec poutro names.txt out/
 $ ./render-video.sh
 ```
+
+## Preview
+
+Final video rendering is slow, so to preview a video open
+`preview.html` in your favorite browser. The video will be replayed
+and looped automatically.
+
 ## Support
 
 You can support my work via
