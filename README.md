@@ -4,11 +4,12 @@
 
 ## Quick Start
 
-Install [stack](https://docs.haskellstack.org/en/stable/README/)
+Install [stack](https://docs.haskellstack.org/en/stable/README/) if you're not using [NixOS]
 
 ```console
-$ nix-shell          # if you are using NixOS
-$ stack build
+$ nix-shell               # if you are using NixOS
+$ stack build             # to build the project
+$ stack exec hlint src/   # to check the code with HLint
 $ mkdir out/
 $ stack exec poutro names.txt out/
 $ ./render-video.sh
@@ -29,3 +30,4 @@ You can support my work via
 
 [tsoder]: http://github.com/tsoding/tsoder
 [tsoding]: https://www.twitch.tv/tsoding
+[NixOS]: https://nixos.org/
