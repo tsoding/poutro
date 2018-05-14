@@ -7,8 +7,9 @@
 Install [stack](https://docs.haskellstack.org/en/stable/README/)
 
 ```console
-$ nix-shell          # if you are using NixOS
-$ stack build
+$ nix-shell               # if you are using NixOS
+$ stack build             # to build the project
+$ stack exec hlint src/   # to check the code with HLint
 $ mkdir out/
 $ stack exec poutro names.txt out/
 $ ./render-video.sh
