@@ -1,6 +1,7 @@
 module Main where
 
 import           Outro
+import           System.Directory
 import           System.Environment
 import           Text.Printf
 
@@ -15,12 +16,14 @@ createMetaFile fileName frameCount fps =
     writeFile fileName
       $ printf "var meta = { frameCount: %d, fps: %d };" frameCount fps
 
--- TODO(#8): poutro doesn't create the output folder if it doesn't exist
 mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
   display <- return $ defaultDisplay
   names   <- loadNamesFromFile namesFileName
   frames  <- return $ outroFromNames display names
+
+  createDirectoryIfMissing True
+                           outputFolder
   createMetaFile (printf "%s/meta.js" outputFolder)
                  (length frames)
                  (displayFps display)
