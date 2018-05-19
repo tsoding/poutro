@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Outro where
 
+import           Data.List
 import           Data.String
 import qualified Data.Text as T
 import           Text.Blaze.Svg
@@ -55,6 +56,26 @@ animate (startPos, endPos) fps duration f = map (\i -> f (startPos + dv * V2 i i
           n = duration / dt
           dv = (endPos - startPos) / V2 n n
 
+waitFor :: S.Svg -> Double -> Double -> [S.Svg]
+waitFor object fps duration = map (const object) [0 .. n]
+    where dt = 1.0/ fps
+          n = duration / dt
+
+bouncyAppear :: (V2, V2) -> Double -> (V2 -> S.Svg) -> [S.Svg]
+bouncyAppear (start, end) fps f =
+    animate (start, overshoot) fps 0.1 f
+      ++ animate (overshoot, end) fps 0.1 f
+    where overshoot = end + (end - start) * V2 0.15 0.15
+
+supportedByAnimation :: Double -> [Frame]
+supportedByAnimation fps =
+    concat [ bouncyAppear (start, end) fps supportedBy
+           , waitFor (supportedBy end) fps 2.0
+           ]
+    where start = V2 x 0
+          end   = V2 x 150
+          x = 1920.0 / 2.0 - 300.0
+
 scene :: Display -> S.Svg -> Frame
 scene display inner =
     S.docTypeSvg
@@ -70,12 +91,15 @@ scene display inner =
     where w = displayWidth display
           h = displayHeight display
 
+parallelCombine :: [[S.Svg]] -> [S.Svg]
+parallelCombine = map toSvg . transpose
+
 outroFromNames :: Display -> [String] -> [Frame]
 outroFromNames display _ =
     map (scene display)
-      $ animate (V2 x (-10), V2 x (y + 30)) fps 0.10 supportedBy
-          ++ animate (V2 x (y + 30), V2 x y) fps 0.1 supportedBy
-          ++ animate (V2 x y, V2 x y) fps 5.0 supportedBy
+      $ parallelCombine [ supportedByAnimation fps
+                        , concat [ bouncyAppear (V2 500 1200, V2 500 500) fps $ textElement "hoi" 50
+                                 , waitFor (textElement "hoi" 50 (V2 500 500)) fps 2.0
+                                 ]
+                        ]
     where fps = fromIntegral $ displayFps display
-          x = 1920 / 2.0 - 300.0
-          y = 150
