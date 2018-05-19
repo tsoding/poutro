@@ -33,6 +33,10 @@ instance Fractional V2 where
 timehopEvents :: [Double]
 timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241]
 
+nameSlots = map (\y -> (V2 (-400) y, V2 780 y))
+              $ map (+ 270)
+              $ map (* 70) [0 .. 8]
+
 defaultDisplay :: Display
 defaultDisplay = Display { displayWidth = 1920
                          , displayHeight = 1080
@@ -98,11 +102,15 @@ parallelCombine :: [[S.Svg]] -> [S.Svg]
 parallelCombine = map toSvg . transpose
 
 outroFromNames :: Display -> [String] -> [Frame]
-outroFromNames display _ =
+outroFromNames display names =
     map (scene display)
-      $ parallelCombine [ supportedByAnimation fps
-                        , concat [ bouncyAppear (V2 500 1200, V2 500 500) fps $ textElement "hoi" 50
-                                 , waitFor (textElement "hoi" 50 (V2 500 500)) fps 2.0
-                                 ]
-                        ]
+      $ parallelCombine
+      $ map (\(t, (el, (start, end))) ->
+          concat [ waitFor (el start) fps t
+                 , bouncyAppear (start, end) fps el
+                 , waitFor (el end) fps (duration - t)
+                 ])
+      $ zip timehopEvents elements
     where fps = fromIntegral $ displayFps display
+          elements = [(supportedBy, (V2 0 150, V2 660 150))] ++ zip (map (\name -> textElement name 60) names) nameSlots
+          duration = 8.5
