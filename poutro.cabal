@@ -64,6 +64,7 @@ executable poutro
                      , blaze-svg
                      , directory
                      , hlint
+                     , text
   
   -- Directories containing source files.
   hs-source-dirs:      src
