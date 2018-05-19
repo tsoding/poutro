@@ -30,8 +30,8 @@ instance Fractional V2 where
     fromRational x = V2 (fromRational x) (fromRational x)
     recip (V2 x y) = V2 (recip x) (recip y)
 
-timehopeEvents :: [Int]
-timehopeEvents = [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241]
+timehopEvents :: [Double]
+timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241]
 
 defaultDisplay :: Display
 defaultDisplay = Display { displayWidth = 1920
