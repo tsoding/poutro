@@ -57,15 +57,6 @@ bouncyAppear (start, end) fps f =
       ++ animate (overshoot, end) fps 0.1 f
     where overshoot = end + (end - start) * V2 0.15 0.15
 
-supportedByAnimation :: Double -> [Frame]
-supportedByAnimation fps =
-    concat [ bouncyAppear (start, end) fps supportedBy
-           , waitFor (supportedBy end) fps 2.0
-           ]
-    where start = V2 x 0
-          end   = V2 x 150
-          x = 1920.0 / 2.0 - 300.0
-
 scene :: Display -> S.Svg -> Frame
 scene display inner =
     S.docTypeSvg
