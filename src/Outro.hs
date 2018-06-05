@@ -9,6 +9,7 @@ module Outro where
 import           Animations
 import           Data.List
 import           Data.String
+import           Display
 import           Elements
 import           Text.Blaze.Svg (toSvg)
 import           Text.Blaze.Svg.Renderer.String
@@ -18,10 +19,6 @@ import qualified Text.Blaze.Svg11.Attributes as A
 import           V2
 
 type Frame = S.Svg
-data Display = Display { displayWidth :: Int
-                       , displayHeight :: Int
-                       , displayFps :: Int
-                       }
 
 timehopEvents :: [Double]
 timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241]
@@ -31,12 +28,6 @@ nameSlots = map (\(x, y) -> ( V2 x (y * 75 + 270)
                             , V2 780 (y * 75 + 270)
                             ))
               $ zip (cycle [-400, 2000]) [0 .. 8]
-
-defaultDisplay :: Display
-defaultDisplay = Display { displayWidth = 1920
-                         , displayHeight = 1080
-                         , displayFps = 30
-                         }
 
 saveFrame :: FilePath -> Frame -> IO ()
 saveFrame fileName svgMarkup =

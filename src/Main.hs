@@ -5,6 +5,7 @@ Entry point to the CLI utility of the animation framework
 -}
 module Main where
 
+import           Display
 import           Outro
 import           System.Directory
 import           System.Environment
