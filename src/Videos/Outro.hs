@@ -1,10 +1,10 @@
 {-|
-Module : Outro
+Module : Videos.Outro
 
 Patreon credits outro sequence
 -}
 {-# LANGUAGE OverloadedStrings #-}
-module Outro (outro) where
+module Videos.Outro (outro) where
 
 import           Animations
 import           Data.String

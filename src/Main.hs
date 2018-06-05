@@ -7,10 +7,10 @@ module Main where
 
 import           Display
 import           Frame
-import           Outro
 import           System.Directory
 import           System.Environment
 import           Text.Printf
+import           Videos.Outro
 
 frameFileNames :: String -> [String]
 frameFileNames prefix = map (printf "%s%d.svg" prefix) [0 :: Int .. ]

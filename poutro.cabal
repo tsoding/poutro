@@ -64,8 +64,8 @@ executable poutro
                      , Display
                      , Elements
                      , Frame
-                     , Outro
                      , V2
+                     , Videos.Outro
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    
