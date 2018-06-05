@@ -1,12 +1,19 @@
+{-|
+Module : Main
+
+Entry point to the CLI utility of the animation framework
+-}
 module Main where
 
-import           Outro
+import           Display
+import           Frame
 import           System.Directory
 import           System.Environment
 import           Text.Printf
+import           Videos.Outro
 
 frameFileNames :: String -> [String]
-frameFileNames prefix = map (\n -> prefix ++ show n ++ ".svg") [0 .. ]
+frameFileNames prefix = map (printf "%s%d.svg" prefix) [0 :: Int .. ]
 
 loadNamesFromFile :: FilePath -> IO [String]
 loadNamesFromFile fileName = lines <$> readFile fileName
@@ -20,7 +27,7 @@ mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
   display <- return defaultDisplay
   names   <- loadNamesFromFile namesFileName
-  frames  <- return $ outroFromNames display names
+  frames  <- return $ outro display names
 
   createDirectoryIfMissing True
                            outputFolder
