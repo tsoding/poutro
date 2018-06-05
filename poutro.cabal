@@ -63,6 +63,7 @@ executable poutro
   other-modules:       Animations
                      , Display
                      , Elements
+                     , Frame
                      , Outro
                      , V2
   

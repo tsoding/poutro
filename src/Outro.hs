@@ -7,18 +7,15 @@ Patreon credits outro sequence
 module Outro where
 
 import           Animations
-import           Data.List
 import           Data.String
 import           Display
 import           Elements
+import           Frame
 import           Text.Blaze.Svg (toSvg)
-import           Text.Blaze.Svg.Renderer.String
 import           Text.Blaze.Svg11 ((!))
 import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
 import           V2
-
-type Frame = S.Svg
 
 timehopEvents :: [Double]
 timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241]
@@ -28,10 +25,6 @@ nameSlots = map (\(x, y) -> ( V2 x (y * 75 + 270)
                             , V2 780 (y * 75 + 270)
                             ))
               $ zip (cycle [-400, 2000]) [0 .. 8]
-
-saveFrame :: FilePath -> Frame -> IO ()
-saveFrame fileName svgMarkup =
-    writeFile fileName $ renderSvg svgMarkup
 
 scene :: Display -> S.Svg -> Frame
 scene display inner =
@@ -47,9 +40,6 @@ scene display inner =
              ]
     where w = displayWidth display
           h = displayHeight display
-
-parallelCombine :: [[S.Svg]] -> [S.Svg]
-parallelCombine = map toSvg . transpose
 
 outroFromNames :: Display -> [String] -> [Frame]
 outroFromNames display names =
