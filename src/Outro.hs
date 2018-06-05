@@ -9,7 +9,6 @@ import           Text.Blaze.Svg.Renderer.String
 import           Text.Blaze.Svg11 ((!))
 import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
-import           Text.Printf
 import           V2
 
 type Frame = S.Svg
@@ -37,12 +36,6 @@ saveFrame :: FilePath -> Frame -> IO ()
 saveFrame fileName svgMarkup =
     writeFile fileName $ renderSvg svgMarkup
 
-textElement :: String -> Int -> V2 -> S.Svg
-textElement label fontSize (V2 x y) =
-  S.text_ (toSvg label)
-    ! A.x (fromString $ show x)
-    ! A.y (fromString $ show y)
-    ! A.style (fromString $ printf "font-family:Cantarell;font-size:%dpx;fill:#e4e4ef" fontSize)
 
 supportedBy :: V2 -> S.Svg
 supportedBy = textElement "Supported by" 100
