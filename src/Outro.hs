@@ -1,14 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Outro where
 
-import           Control.Arrow
 import           Data.List
 import           Data.String
-import qualified Data.Text as T
 import           Elements
-import           Text.Blaze.Svg
+import           Text.Blaze.Svg (toSvg)
 import           Text.Blaze.Svg.Renderer.String
-import           Text.Blaze.Svg11 ((!), mkPath, l, m)
+import           Text.Blaze.Svg11 ((!))
 import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
 import           Text.Printf

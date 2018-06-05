@@ -50,6 +50,12 @@ cabal-version:       >=1.10
 
 
 executable poutro
+  ghc-options:         -threaded
+                       -Wall
+                       -Werror
+                       -fwarn-incomplete-patterns
+                       -fwarn-incomplete-uni-patterns
+
   -- .hs or .lhs file containing the Main module.
   main-is:             Main.hs
   
