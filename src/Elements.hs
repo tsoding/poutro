@@ -1,7 +1,8 @@
 {-|
 Module : Elements
 
-This module contains common elements of animations
+This module contains common elements of animations. Must be functions
+that return S.Svg element based on the parameters of the element.
 -}
 {-# LANGUAGE OverloadedStrings #-}
 module Elements where
