@@ -55,6 +55,8 @@ executable poutro
   
   -- Modules included in this executable, other than Main.
   other-modules:       Outro
+                     , Elements
+                     , V2
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    
