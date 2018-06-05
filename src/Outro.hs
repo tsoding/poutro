@@ -41,8 +41,8 @@ scene display inner =
     where w = displayWidth display
           h = displayHeight display
 
-outroFromNames :: Display -> [String] -> [Frame]
-outroFromNames display names =
+outro :: Display -> [String] -> [Frame]
+outro display names =
     map (scene display)
       $ parallelCombine
       $ map (\(t, (el, (start, end))) ->

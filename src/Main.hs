@@ -27,7 +27,7 @@ mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
   display <- return defaultDisplay
   names   <- loadNamesFromFile namesFileName
-  frames  <- return $ outroFromNames display names
+  frames  <- return $ outro display names
 
   createDirectoryIfMissing True
                            outputFolder
