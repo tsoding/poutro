@@ -36,10 +36,6 @@ saveFrame :: FilePath -> Frame -> IO ()
 saveFrame fileName svgMarkup =
     writeFile fileName $ renderSvg svgMarkup
 
-
-supportedBy :: V2 -> S.Svg
-supportedBy = textElement "Supported by" 100
-
 animate :: (V2, V2) -> Double -> Double -> (V2 -> S.Svg) -> [S.Svg]
 animate (startPos, endPos) fps duration f = map (\i -> f (startPos + dv * V2 i i)) [0 .. n]
     where dt = 1.0 / fps
@@ -91,3 +87,4 @@ outroFromNames display names =
                        ++ [ (textElement "via" 100, (V2 (-450) 1000, V2 750 1000))
                           , (patreonLogo, (V2 1920 925, V2 950 925))]
           duration = 8.5
+          supportedBy = textElement "Supported by" 100
