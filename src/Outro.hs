@@ -4,7 +4,7 @@ Module : Outro
 Patreon credits outro sequence
 -}
 {-# LANGUAGE OverloadedStrings #-}
-module Outro where
+module Outro (outro) where
 
 import           Animations
 import           Data.String
