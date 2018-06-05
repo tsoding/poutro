@@ -44,13 +44,6 @@ textElement label fontSize (V2 x y) =
     ! A.y (fromString $ show y)
     ! A.style (fromString $ printf "font-family:Cantarell;font-size:%dpx;fill:#e4e4ef" fontSize)
 
-imageElement :: V2 -> S.Svg
-imageElement (V2 x y) =
-  S.image
-    ! A.x (fromString $ show x)
-    ! A.y (fromString $ show y)
-    ! A.xlinkHref ""
-
 supportedBy :: V2 -> S.Svg
 supportedBy = textElement "Supported by" 100
 
