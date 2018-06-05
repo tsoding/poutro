@@ -1,3 +1,8 @@
+{-|
+Module : Main
+
+Entry point to the CLI utility of the animation framework
+-}
 module Main where
 
 import           Outro

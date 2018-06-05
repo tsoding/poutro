@@ -1,3 +1,8 @@
+{-|
+Module : Elements
+
+This module contains common elements of animations
+-}
 {-# LANGUAGE OverloadedStrings #-}
 module Elements where
 

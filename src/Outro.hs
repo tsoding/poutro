@@ -1,3 +1,8 @@
+{-|
+Module : Outro
+
+Patreon credits outro sequence
+-}
 {-# LANGUAGE OverloadedStrings #-}
 module Outro where
 

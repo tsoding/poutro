@@ -1,3 +1,8 @@
+{-|
+Module : V2
+
+2D Vector
+-}
 module V2 where
 
 data V2 = V2 !Double !Double deriving Show
