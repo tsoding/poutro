@@ -6,6 +6,8 @@ input.
 -}
 module Animations where
 
+import           Data.List
+import           Text.Blaze.Svg (toSvg)
 import qualified Text.Blaze.Svg11 as S
 import           V2
 
@@ -25,3 +27,6 @@ bouncyAppear (start, end) fps f =
     animate (start, overshoot) fps 0.1 f
       ++ animate (overshoot, end) fps 0.1 f
     where overshoot = end + (end - start) * V2 0.15 0.15
+
+parallelCombine :: [[S.Svg]] -> [S.Svg]
+parallelCombine = map toSvg . transpose
