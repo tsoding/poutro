@@ -10,21 +10,21 @@ import           Data.List
 import           Text.Blaze.Svg (toSvg)
 import qualified Text.Blaze.Svg11 as S
 
-animate :: (Fractional a, Num a) => (a, a) -> Double -> Double -> (a -> S.Svg) -> [S.Svg]
-animate (startPos, endPos) fps duration f = map (\i -> f (startPos + dv * fromInteger i)) [0 .. n]
+animate :: (Fractional a, Num a) => (a, a) -> Double -> Double -> [a]
+animate (startPos, endPos) fps duration = map (\i -> startPos + dv * fromInteger i) [0 .. n]
     where dt = 1.0 / fps
           n = round (duration / dt)
           dv = (endPos - startPos) / fromInteger n
 
-waitFor :: S.Svg -> Double -> Double -> [S.Svg]
+waitFor :: a -> Double -> Double -> [a]
 waitFor object fps duration = map (const object) [0 .. n]
     where dt = 1.0 / fps
           n = duration / dt
 
-bouncyAppear :: (Fractional a, Num a) => (a, a) -> Double -> (a -> S.Svg) -> [S.Svg]
-bouncyAppear (start, end) fps f =
-    animate (start, overshoot) fps 0.1 f
-      ++ animate (overshoot, end) fps 0.1 f
+bouncyAppear :: (Fractional a, Num a) => (a, a) -> Double -> [a]
+bouncyAppear (start, end) fps =
+    animate (start, overshoot) fps 0.1
+      ++ animate (overshoot, end) fps 0.1
     where overshoot = end + (end - start) * fromRational 0.15
 
 parallelCombine :: [[S.Svg]] -> [S.Svg]

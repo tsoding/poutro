@@ -27,10 +27,10 @@ outro display names =
     map (solidBackground display backgroundColor)
       $ parallelCombine
       $ map (\(t, (el, (start, end))) ->
-          concat [ waitFor (el start) fps t
-                 , bouncyAppear (start, end) fps el
-                 , waitFor (el end) fps (duration - t)
-                 ])
+          map el $ concat [ waitFor start fps t
+                          , bouncyAppear (start, end) fps
+                          , waitFor end fps (duration - t)
+                          ])
       $ zip timehopEvents elements
     where fps = fromIntegral $ displayFps display
           elements = [(supportedBy, (V2 660 0, V2 660 150))]
