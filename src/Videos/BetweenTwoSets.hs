@@ -17,10 +17,14 @@ import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
 import           Text.Printf
 import           V2
+import           Text.Blaze.Svg (toSvg)
 
 type Color = String
 
-arrayElement :: Color -> V2 Double -> Double -> S.Svg
+arrayElement :: Color           -- color
+             -> V2 Double       -- center
+             -> Double          -- radius
+             -> S.Svg
 arrayElement color (V2 cx cy) r =
     S.circle
       ! A.cx (fromString $ show cx)
@@ -74,7 +78,7 @@ allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
           width = displayWidth display
           arrayImageWidth = fromIntegral n * d + fromIntegral (n - 1) * spacing
           d = 2.0 * r
-          spacing = 50.0
+          spacing = 100.0
           -- time for an individual element to appear
           dt = appearTime / fromIntegral n
 
