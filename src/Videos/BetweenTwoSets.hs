@@ -29,15 +29,18 @@ arrayElement color (V2 cx cy) r =
       ! A.style (fromString $ printf "fill:%s" color)
 
 arrayElementAppear :: Display                -- display
+                   -> Double                 -- waitTime
                    -> Double                 -- appearTime
                    -> Double                 -- freezeTime
                    -> Color                  -- color
                    -> Double                 -- radius
                    -> (V2 Double, V2 Double) -- center
                    -> [S.Svg]
-arrayElementAppear display appearTime freezeTime color r (center1, center2) =
+arrayElementAppear display waitTime appearTime freezeTime color r (center1, center2) =
     map (\(p, r') -> arrayElement color p r')
-      $ concat [ zip (bouncyAppear (center1, center2) fps appearTime)
+      $ concat [ zip (waitFor center1 fps waitTime)
+                     (waitFor (r * 2.0) fps waitTime)
+               , zip (bouncyAppear (center1, center2) fps appearTime)
                      (bouncyAppear (r * 2.0, r) fps appearTime)
                , zip (waitFor center2 fps freezeTime)
                      (waitFor r fps freezeTime)
@@ -55,8 +58,9 @@ allArrayElementsAppear :: Display          -- display
 allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
     parallelCombine
       $ map (\i -> arrayElementAppear display
+                                      (fromIntegral i * dt)
                                       appearTime
-                                      freezeTime
+                                      (freezeTime + fromIntegral (n - i - 1) * dt)
                                       color
                                       r
                                       ( center1 + V2 ((2 * r + spacing) * fromIntegral i) 0
@@ -71,6 +75,8 @@ allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
           arrayImageWidth = fromIntegral n * d + fromIntegral (n - 1) * spacing
           d = 2.0 * r
           spacing = 50.0
+          -- time for an individual element to appear
+          dt = appearTime / fromIntegral n
 
 arraysAppear :: Display         -- display
              -> Double          -- appearTime
