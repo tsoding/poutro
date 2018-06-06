@@ -65,6 +65,7 @@ executable poutro
                      , Elements
                      , Frame
                      , V2
+                     , Videos.BetweenTwoSets
                      , Videos.Outro
   
   -- LANGUAGE extensions used by modules in this package.

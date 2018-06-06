@@ -7,21 +7,12 @@ module Main where
 
 import           Display
 import           Frame
-import           System.Directory
 import           System.Environment
-import           Text.Printf
 import           Videos.Outro
-
-frameFileNames :: String -> [String]
-frameFileNames prefix = map (printf "%s%d.svg" prefix) [0 :: Int .. ]
+-- import           Videos.BetweenTwoSets
 
 loadNamesFromFile :: FilePath -> IO [String]
 loadNamesFromFile fileName = lines <$> readFile fileName
-
-createMetaFile :: FilePath -> Int -> Int -> IO ()
-createMetaFile fileName frameCount fps =
-    writeFile fileName
-      $ printf "var meta = { frameCount: %d, fps: %d };" frameCount fps
 
 mainWithArgs :: [String] -> IO ()
 mainWithArgs (namesFileName:outputFolder:_) = do
@@ -29,13 +20,7 @@ mainWithArgs (namesFileName:outputFolder:_) = do
   names   <- loadNamesFromFile namesFileName
   frames  <- return $ outro display names
 
-  createDirectoryIfMissing True
-                           outputFolder
-  createMetaFile (printf "%s/meta.js" outputFolder)
-                 (length frames)
-                 (displayFps display)
-  mapM_ (uncurry saveFrame)
-    $ zip (frameFileNames $ printf "%s/" outputFolder) frames
+  saveVideoToFolder display outputFolder frames
 mainWithArgs _ = error "Usage: ./poutro <names-file> <output-folder>"
 
 main :: IO ()
