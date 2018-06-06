@@ -5,9 +5,9 @@ Module : V2
 -}
 module V2 where
 
-data V2 = V2 !Double !Double deriving Show
+data V2 a = V2 !a !a deriving Show
 
-instance Num V2 where
+instance Num a => Num (V2 a) where
     (V2 x1 y1) + (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
     (V2 x1 y1) * (V2 x2 y2) = V2 (x1 * x2) (y1 * y2)
     negate (V2 x1 y1) = V2 (negate x1) (negate y1)
@@ -15,6 +15,6 @@ instance Num V2 where
     signum (V2 x1 y1) = V2 (signum x1) (signum y1)
     fromInteger x = V2 (fromIntegral x) (fromIntegral x)
 
-instance Fractional V2 where
+instance Fractional a => Fractional (V2 a) where
     fromRational x = V2 (fromRational x) (fromRational x)
     recip (V2 x y) = V2 (recip x) (recip y)
