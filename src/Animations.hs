@@ -11,11 +11,11 @@ import           Text.Blaze.Svg (toSvg)
 import qualified Text.Blaze.Svg11 as S
 import           V2
 
-animate :: (V2 Double, V2 Double) -> Double -> Double -> (V2 Double -> S.Svg) -> [S.Svg]
-animate (startPos, endPos) fps duration f = map (\i -> f (startPos + dv * V2 i i)) [0 .. n]
+animate :: (Fractional a, Num a) => (a, a) -> Double -> Double -> (a -> S.Svg) -> [S.Svg]
+animate (startPos, endPos) fps duration f = map (\i -> f (startPos + dv * fromInteger i)) [0 .. n]
     where dt = 1.0 / fps
-          n = duration / dt
-          dv = (endPos - startPos) / V2 n n
+          n = round (duration / dt)
+          dv = (endPos - startPos) / fromInteger n
 
 waitFor :: S.Svg -> Double -> Double -> [S.Svg]
 waitFor object fps duration = map (const object) [0 .. n]
