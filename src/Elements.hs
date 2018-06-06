@@ -8,6 +8,8 @@ that return S.Svg element based on the parameters of the element.
 module Elements where
 
 import           Data.String
+import           Display
+import           Frame
 import           Text.Blaze.Svg (toSvg)
 import           Text.Blaze.Svg11 ((!))
 import qualified Text.Blaze.Svg11 as S
@@ -29,3 +31,18 @@ textElement label fontSize (V2 x y) =
     ! A.x (fromString $ show x)
     ! A.y (fromString $ show y)
     ! A.style (fromString $ printf "font-family:Cantarell;font-size:%dpx;fill:#e4e4ef" fontSize)
+
+solidBackground :: Display -> String -> S.Svg -> Frame
+solidBackground display color inner =
+    S.docTypeSvg
+     ! A.version "1.1"
+     ! A.width (fromString $ show w)
+     ! A.height (fromString $ show h) $
+       toSvg [ S.rect
+                 ! A.width (fromString $ show w)
+                 ! A.height (fromString $ show h)
+                 ! A.style (fromString $ printf "fill:%s" color)
+             , inner
+             ]
+    where w = displayWidth display
+          h = displayHeight display

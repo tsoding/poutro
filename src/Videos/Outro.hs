@@ -7,14 +7,9 @@ Patreon credits outro sequence
 module Videos.Outro (outro) where
 
 import           Animations
-import           Data.String
 import           Display
 import           Elements
 import           Frame
-import           Text.Blaze.Svg (toSvg)
-import           Text.Blaze.Svg11 ((!))
-import qualified Text.Blaze.Svg11 as S
-import qualified Text.Blaze.Svg11.Attributes as A
 import           V2
 
 timehopEvents :: [Double]
@@ -26,24 +21,10 @@ nameSlots = map (\(x, y) -> ( V2 x (y * 75 + 270)
                             ))
               $ zip (cycle [-400, 2000]) [0 .. 8]
 
-scene :: Display -> S.Svg -> Frame
-scene display inner =
-    S.docTypeSvg
-     ! A.version "1.1"
-     ! A.width (fromString $ show w)
-     ! A.height (fromString $ show h) $
-       toSvg [ S.rect
-                 ! A.width (fromString $ show w)
-                 ! A.height (fromString $ show h)
-                 ! A.style "fill:#181818"
-             , inner
-             ]
-    where w = displayWidth display
-          h = displayHeight display
 
 outro :: Display -> [String] -> [Frame]
 outro display names =
-    map (scene display)
+    map (solidBackground display backgroundColor)
       $ parallelCombine
       $ map (\(t, (el, (start, end))) ->
           concat [ waitFor (el start) fps t
@@ -58,3 +39,4 @@ outro display names =
                           , (patreonLogo, (V2 1920 925, V2 950 925))]
           duration = 8.5
           supportedBy = textElement "Supported by" 100
+          backgroundColor = "#181818"
