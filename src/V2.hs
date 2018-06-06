@@ -18,3 +18,10 @@ instance Num a => Num (V2 a) where
 instance Fractional a => Fractional (V2 a) where
     fromRational x = V2 (fromRational x) (fromRational x)
     recip (V2 x y) = V2 (recip x) (recip y)
+
+instance Functor V2 where
+    fmap f (V2 x y) = V2 (f x) (f y)
+
+instance Applicative V2 where
+    pure x = V2 x x
+    (V2 f1 f2) <*> (V2 x1 x2) = V2 (f1 x1) (f2 x2)
