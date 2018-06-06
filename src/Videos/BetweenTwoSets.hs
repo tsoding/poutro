@@ -54,9 +54,18 @@ rules :: Display -> [Frame]
 rules display =
     map (solidBackground display backgroundColor)
       $ parallelCombine
-      $ map (pulsatingCircle fps 50.0 color)
-      $ circlePositions display circleCount 50.0
+      $ map (\(i, center) ->
+                 map (arrayElement color center)
+                   $ concat [ waitFor radius fps ((duration / fromIntegral circleCount) * fromIntegral i)
+                            , bouncyAppear (radius, radius * 2.0) fps
+                            , waitFor (radius * 2.0) fps (duration - ((duration / fromIntegral circleCount) * fromIntegral i))
+                            , bouncyAppear (radius * 2.0, radius) fps
+                            ])
+      $ zip [1 .. circleCount]
+      $ circlePositions display circleCount radius
     where backgroundColor = "#181818"
           color = "#ff8d1e"
           fps = fromIntegral $ displayFps display
-          circleCount = 9
+          circleCount = 10
+          radius = 25.0
+          duration = 0.5
