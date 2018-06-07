@@ -17,7 +17,6 @@ import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
 import           Text.Printf
 import           V2
-import           Text.Blaze.Svg (toSvg)
 
 type Color = String
 
