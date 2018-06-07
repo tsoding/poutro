@@ -19,8 +19,7 @@ horizontalLineLayout :: Display     -- display
                      -> Double      -- y
                      -> [V2 Double]
 horizontalLineLayout display n spacing y =
-    map (\x -> V2 x y)
-      $ map (\i -> fromIntegral i * spacing + offsetX) [0 .. n - 1]
+    map (\i -> V2 (fromIntegral i * spacing + offsetX) y) [0 .. n - 1]
     where offsetX = fromIntegral width * 0.5 - lineWidth * 0.5
           lineWidth = (fromIntegral n - 1) * spacing
           width = displayWidth display
