@@ -47,7 +47,7 @@ rules display _ =
                                        (waitFor r3 fps 2.0)
                                        (repeat color2)
                                 , zip3 (bouncyAppear (c3, c4) fps dt)
-                                       (waitFor r3 fps dt)
+                                       (bouncyAppear (r3, r2) fps dt)
                                        (repeat color3)
                                 , zip3 (waitFor c4 fps 2.0)
                                        (waitFor r3 fps 2.0)
@@ -87,7 +87,7 @@ rules display _ =
                                        (repeat color3)
                                 --
                                 , zip3 (bouncyAppear (c2, c3) fps dt)
-                                       (waitFor r2 fps dt)
+                                       (bouncyAppear (r2, r3) fps dt)
                                        (repeat color3)
                                 ])
               $ (  zip (horizontalLineLayout display n spacing2 y1)
