@@ -20,7 +20,10 @@ import           V2
 
 type Color = String
 
-arrayElement :: Color -> V2 Double -> Double -> S.Svg
+arrayElement :: Color           -- color
+             -> V2 Double       -- center
+             -> Double          -- radius
+             -> S.Svg
 arrayElement color (V2 cx cy) r =
     S.circle
       ! A.cx (fromString $ show cx)
@@ -28,44 +31,76 @@ arrayElement color (V2 cx cy) r =
       ! A.r (fromString $ show r)
       ! A.style (fromString $ printf "fill:%s" color)
 
-circlePositions :: Display
-                -> Int
-                -> Double
-                -> [V2 Double]
-circlePositions display amount radius = map (\x -> V2 (x * radius * 2.0 * 2.0 + cx - shift) cy) [0 .. fromIntegral (amount - 1)]
-    where V2 cx cy = displaySize * fromRational 0.5
-          displaySize = fromIntegral <$> V2 (displayWidth display) (displayHeight display)
-          shift = radius * 2.0 * 2.0 * fromIntegral amount * 0.5 - radius * 2.0
-
-pulsatingCircle :: Double
-                -> Double
-                -> Color
-                -> V2 Double
-                -> [S.Svg]
-pulsatingCircle fps radius color center =
-    map (arrayElement color center)
-      $ concat [ waitFor radius fps 2.0
-               , bouncyAppear (radius, radius * 2.0) fps
-               , waitFor (radius * 2.0) fps 2.0
-               , bouncyAppear (radius * 2.0, radius) fps
+arrayElementAppear :: Display                -- display
+                   -> Double                 -- waitTime
+                   -> Double                 -- appearTime
+                   -> Double                 -- freezeTime
+                   -> Color                  -- color
+                   -> Double                 -- radius
+                   -> (V2 Double, V2 Double) -- center
+                   -> [S.Svg]
+arrayElementAppear display waitTime appearTime freezeTime color r (center1, center2) =
+    map (uncurry (arrayElement color))
+      $ concat [ zip (waitFor center1 fps waitTime)
+                     (waitFor (r * 2.0) fps waitTime)
+               , zip (bouncyAppear (center1, center2) fps appearTime)
+                     (bouncyAppear (r * 2.0, r) fps appearTime)
+               , zip (waitFor center2 fps freezeTime)
+                     (waitFor r fps freezeTime)
                ]
+    where fps = fromIntegral $ displayFps display
 
-rules :: Display -> [Frame]
-rules display =
+allArrayElementsAppear :: Display          -- display
+                       -> Int              -- n
+                       -> Double           -- radius
+                       -> Double           -- appearTime
+                       -> Double           -- freezeTime
+                       -> Color            -- color
+                       -> (Double, Double) -- cy1, cy2
+                       -> [S.Svg]
+allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
+    parallelCombine
+      $ map (\i -> arrayElementAppear display
+                                      (fromIntegral i * dt)
+                                      appearTime
+                                      (freezeTime + fromIntegral (n - i - 1) * dt)
+                                      color
+                                      r
+                                      ( center1 + V2 ((2 * r + spacing) * fromIntegral i) 0
+                                      , center2 + V2 ((2 * r + spacing) * fromIntegral i) 0
+                                      ))
+            [0 :: Int .. n - 1]
+    where center1 = V2 cx cy1 - V2 offsetX 0
+          center2 = V2 cx cy2 - V2 offsetX 0
+          cx = fromIntegral width * 0.5
+          offsetX = arrayImageWidth * 0.5 - r
+          width = displayWidth display
+          arrayImageWidth = fromIntegral n * d + fromIntegral (n - 1) * spacing
+          d = 2.0 * r
+          spacing = 100.0
+          -- time for an individual element to appear
+          dt = appearTime / fromIntegral n
+
+arraysAppear :: Display         -- display
+             -> Double          -- appearTime
+             -> Double          -- freezeTime
+             -> [Frame]
+arraysAppear display appearTime freezeTime =
     map (solidBackground display backgroundColor)
-      $ parallelCombine
-      $ map (\(i, center) ->
-                 map (arrayElement color center)
-                   $ concat [ waitFor radius fps ((duration / fromIntegral circleCount) * fromIntegral i)
-                            , bouncyAppear (radius, radius * 2.0) fps
-                            , waitFor (radius * 2.0) fps (duration - ((duration / fromIntegral circleCount) * fromIntegral i))
-                            , bouncyAppear (radius * 2.0, radius) fps
-                            ])
-      $ zip [1 .. circleCount]
-      $ circlePositions display circleCount radius
-    where backgroundColor = "#181818"
-          color = "#ff8d1e"
-          fps = fromIntegral $ displayFps display
-          circleCount = 10
-          radius = 25.0
-          duration = 0.5
+      $ parallelCombine [ allArrayElementsAppear display n r appearTime freezeTime color1 (-d, cy1)
+                        , allArrayElementsAppear display n r appearTime freezeTime color2 (height + d, cy2)
+                        ]
+    where color1 = "#8dff1e"
+          color2 = "#ff8d1e"
+          cy1 = spacing + r
+          cy2 = height - spacing - r
+          backgroundColor = "#181818"
+          n = 6
+          r = 100.0
+          d = 2 * r
+          spacing = 100.0
+          height = fromIntegral $ displayHeight display
+
+rules :: Display -> [Double] -> [Frame]
+rules display _ =
+    arraysAppear display 0.4 2

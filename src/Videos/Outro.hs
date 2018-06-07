@@ -28,7 +28,7 @@ outro display names =
       $ parallelCombine
       $ map (\(t, (el, (start, end))) ->
           map el $ concat [ waitFor start fps t
-                          , bouncyAppear (start, end) fps
+                          , bouncyAppear (start, end) fps 0.2
                           , waitFor end fps (duration - t)
                           ])
       $ zip timehopEvents elements
