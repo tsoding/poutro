@@ -8,28 +8,10 @@ https://www.hackerrank.com/challenges/between-two-sets/problem
 module Videos.BetweenTwoSets (rules) where
 
 import           Animations
-import           Data.String
 import           Display
 import           Elements
 import           Frame
-import           Text.Blaze.Svg11 ((!))
-import qualified Text.Blaze.Svg11 as S
-import qualified Text.Blaze.Svg11.Attributes as A
-import           Text.Printf
 import           V2
-
-type Color = String
-
-circleElement :: Color           -- color
-              -> V2 Double       -- center
-              -> Double          -- radius
-              -> S.Svg
-circleElement color (V2 cx cy) r =
-    S.circle
-      ! A.cx (fromString $ show cx)
-      ! A.cy (fromString $ show cy)
-      ! A.r (fromString $ show r)
-      ! A.style (fromString $ printf "fill:%s" color)
 
 horizontalLineLayout :: Display     -- display
                      -> Int         -- n
