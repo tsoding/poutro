@@ -8,7 +8,6 @@ https://www.hackerrank.com/challenges/between-two-sets/problem
 module Videos.BetweenTwoSets (rules) where
 
 import           Animations
-import           Data.List
 import           Data.String
 import           Display
 import           Elements
@@ -21,11 +20,11 @@ import           V2
 
 type Color = String
 
-arrayElement :: Color           -- color
-             -> V2 Double       -- center
-             -> Double          -- radius
-             -> S.Svg
-arrayElement color (V2 cx cy) r =
+circleElement :: Color           -- color
+              -> V2 Double       -- center
+              -> Double          -- radius
+              -> S.Svg
+circleElement color (V2 cx cy) r =
     S.circle
       ! A.cx (fromString $ show cx)
       ! A.cy (fromString $ show cy)
@@ -48,7 +47,7 @@ rules :: Display -> [Double] -> [Frame]
 rules display _ =
     map (solidBackground display backgroundColor)
       $ parallelCombine
-      $ map (map (\(center, r, color') -> arrayElement color' center r))
+      $ map (map (\(center, r, color') -> circleElement color' center r))
       $ map (\(c1, (c2, (c3, (c4, i)))) ->
                  concat [ zip3 (waitFor c1 fps (dt * fromIntegral i * 0.25))
                                (waitFor r1 fps (dt * fromIntegral i * 0.25))
