@@ -40,7 +40,7 @@ arrayElementAppear :: Display                -- display
                    -> (V2 Double, V2 Double) -- center
                    -> [S.Svg]
 arrayElementAppear display waitTime appearTime freezeTime color r (center1, center2) =
-    map (\(p, r') -> arrayElement color p r')
+    map (uncurry (arrayElement color))
       $ concat [ zip (waitFor center1 fps waitTime)
                      (waitFor (r * 2.0) fps waitTime)
                , zip (bouncyAppear (center1, center2) fps appearTime)
@@ -69,7 +69,7 @@ allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
                                       ( center1 + V2 ((2 * r + spacing) * fromIntegral i) 0
                                       , center2 + V2 ((2 * r + spacing) * fromIntegral i) 0
                                       ))
-      $ [0 :: Int .. n - 1]
+            [0 :: Int .. n - 1]
     where center1 = V2 cx cy1 - V2 offsetX 0
           center2 = V2 cx cy2 - V2 offsetX 0
           cx = fromIntegral width * 0.5
@@ -87,10 +87,9 @@ arraysAppear :: Display         -- display
              -> [Frame]
 arraysAppear display appearTime freezeTime =
     map (solidBackground display backgroundColor)
-      $ parallelCombine
-      $ [ allArrayElementsAppear display n r appearTime freezeTime color1 (-d, cy1)
-        , allArrayElementsAppear display n r appearTime freezeTime color2 (height + d, cy2)
-        ]
+      $ parallelCombine [ allArrayElementsAppear display n r appearTime freezeTime color1 (-d, cy1)
+                        , allArrayElementsAppear display n r appearTime freezeTime color2 (height + d, cy2)
+                        ]
     where color1 = "#8dff1e"
           color2 = "#ff8d1e"
           cy1 = spacing + r
