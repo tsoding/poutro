@@ -64,6 +64,7 @@ executable poutro
                      , Display
                      , Elements
                      , Frame
+                     , Layouts
                      , V2
                      , Videos.BetweenTwoSets
                      , Videos.Outro
