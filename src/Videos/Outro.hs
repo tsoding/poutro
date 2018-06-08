@@ -7,6 +7,7 @@ Patreon credits outro sequence
 module Videos.Outro (outro) where
 
 import           Animations
+import qualified Data.Text as T
 import           Display
 import           Elements
 import           Frame
@@ -28,10 +29,10 @@ nameSlots display = concat [ zip (verticalLineLayout display rows spacing leftOf
           leftOffscreen = -500
           rightOffscreen = width
           leftColumn = 400.0
-          rightColumn = width - 600.0
+          rightColumn = width - 700.0
           width = fromIntegral $ displayWidth display
 
-outro :: Display -> [String] -> [Frame]
+outro :: Display -> [T.Text] -> [Frame]
 outro display names =
     map (solidBackground display backgroundColor)
       $ parallelCombine

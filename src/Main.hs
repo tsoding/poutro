@@ -7,21 +7,18 @@ module Main where
 
 import           Display
 import           Frame
+import           Patreon
 import           System.Environment
 import           Videos.Outro
--- import           Videos.BetweenTwoSets
-
-loadNamesFromFile :: FilePath -> IO [String]
-loadNamesFromFile fileName = lines <$> readFile fileName
 
 mainWithArgs :: [String] -> IO ()
-mainWithArgs (namesFileName:outputFolder:_) = do
+mainWithArgs (outputFolder:patronsFile:aliasesFile:_) = do
   display <- return defaultDisplay
-  names   <- loadNamesFromFile namesFileName
+  names   <- patronNamesFromFiles patronsFile aliasesFile
   frames  <- return $ outro display names
 
   saveVideoToFolder display outputFolder frames
-mainWithArgs _ = error "Usage: ./poutro <names-file> <output-folder>"
+mainWithArgs _ = error "Usage: ./poutro <output-folder> <patrons.csv> <aliases.json>"
 
 main :: IO ()
 main = getArgs >>= mainWithArgs

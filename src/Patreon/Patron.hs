@@ -20,6 +20,5 @@ instance FromNamedRecord Patron where
 
 readPatronsFromCsv :: FilePath -> IO [Patron]
 readPatronsFromCsv csvFileName =
-    BS.readFile csvFileName
-      >>= return . decodeByName
+    decodeByName <$> BS.readFile csvFileName
       >>= either error (return . V.toList . snd)

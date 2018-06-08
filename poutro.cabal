@@ -66,6 +66,8 @@ executable poutro
                      , Frame
                      , Layouts
                      , Patreon
+                     , Patreon.Alias
+                     , Patreon.Patron
                      , V2
                      , Videos.BetweenTwoSets
                      , Videos.Outro

@@ -25,8 +25,7 @@ patronAlias aliases patron =
 patronNames :: [Patron] -> [Alias] -> [T.Text]
 patronNames patrons aliases =
     map (patronAlias aliases) $
-    reverse $
-    sortBy (compare `on` patronLifetime) $
+    sortBy (flip compare `on` patronLifetime) $
     filter (\patron -> patronLifetime patron > 0.0
                        && patronStatus patron == "Ok"
                        && patronGavePermission patron aliases)
