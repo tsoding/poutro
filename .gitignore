@@ -94,3 +94,5 @@ cabal.project.local
 
 out/
 names.txt
+*.csv
+*.json

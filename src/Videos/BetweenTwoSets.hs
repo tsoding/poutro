@@ -11,18 +11,8 @@ import           Animations
 import           Display
 import           Elements
 import           Frame
+import           Layouts
 import           V2
-
-horizontalLineLayout :: Display     -- display
-                     -> Int         -- n
-                     -> Double      -- spacing
-                     -> Double      -- y
-                     -> [V2 Double]
-horizontalLineLayout display n spacing y =
-    map (\i -> V2 (fromIntegral i * spacing + offsetX) y) [0 .. n - 1]
-    where offsetX = fromIntegral width * 0.5 - lineWidth * 0.5
-          lineWidth = (fromIntegral n - 1) * spacing
-          width = displayWidth display
 
 rules :: Display -> [Double] -> [Frame]
 rules display _ =

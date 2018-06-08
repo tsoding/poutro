@@ -11,7 +11,7 @@ $ nix-shell               # if you are using NixOS
 $ stack build             # to build the project
 $ stack exec hlint src/   # to check the code with HLint
 $ mkdir out/
-$ stack exec poutro names.txt out/
+$ stack exec poutro out/ patrons.csv aliases.json
 $ ./render-video.sh
 ```
 
