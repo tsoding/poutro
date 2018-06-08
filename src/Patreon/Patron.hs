@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Patreon where
+module Patreon.Patron where
 
 import qualified Data.ByteString.Lazy as BS
 import           Data.Csv
