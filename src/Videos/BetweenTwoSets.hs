@@ -28,8 +28,8 @@ rules :: Display -> [Double] -> [Frame]
 rules display _ =
     let firstArray =
             parallelCombine
-              $ map (map (\(center, r, color') -> circleElement color' center r))
               $ map (\(c1, (c2, (c3, (c4, (c5, i))))) ->
+                     map (\(center, r, color') -> circleElement color' center r) $
                          concat [ zip3 (waitFor c1 fps (dt * fromIntegral i * 0.25))
                                        (waitFor r1 fps (dt * fromIntegral i * 0.25))
                                        (repeat color1)
@@ -66,8 +66,8 @@ rules display _ =
                   y4 = height - r3 - 100.0
         secondArray =
             parallelCombine
-              $ map (map (\(center, r, color') -> circleElement color' center r))
               $ map (\(c1, (c2, (c3, i))) ->
+                     map (\(center, r, color') -> circleElement color' center r) $
                          concat [ zip3 (waitFor c1 fps (dt * fromIntegral i * 0.25))
                                        (waitFor r1 fps (dt * fromIntegral i * 0.25))
                                        (repeat color3)
