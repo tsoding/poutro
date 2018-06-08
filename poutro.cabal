@@ -65,6 +65,7 @@ executable poutro
                      , Elements
                      , Frame
                      , Layouts
+                     , Patreon
                      , V2
                      , Videos.BetweenTwoSets
                      , Videos.Outro
@@ -75,9 +76,12 @@ executable poutro
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.9 && <4.10
                      , blaze-svg
+                     , bytestring
+                     , cassava
                      , directory
                      , hlint
                      , text
+                     , vector
   
   -- Directories containing source files.
   hs-source-dirs:      src
