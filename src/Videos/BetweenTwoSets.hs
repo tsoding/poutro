@@ -5,102 +5,112 @@ Animations for HaskellRank episode about solving
 https://www.hackerrank.com/challenges/between-two-sets/problem
 -}
 
-module Videos.BetweenTwoSets where
+module Videos.BetweenTwoSets (rules) where
 
 import           Animations
-import           Data.String
 import           Display
 import           Elements
 import           Frame
-import           Text.Blaze.Svg11 ((!))
-import qualified Text.Blaze.Svg11 as S
-import qualified Text.Blaze.Svg11.Attributes as A
-import           Text.Printf
 import           V2
 
-type Color = String
-
-arrayElement :: Color           -- color
-             -> V2 Double       -- center
-             -> Double          -- radius
-             -> S.Svg
-arrayElement color (V2 cx cy) r =
-    S.circle
-      ! A.cx (fromString $ show cx)
-      ! A.cy (fromString $ show cy)
-      ! A.r (fromString $ show r)
-      ! A.style (fromString $ printf "fill:%s" color)
-
-arrayElementAppear :: Display                -- display
-                   -> Double                 -- waitTime
-                   -> Double                 -- appearTime
-                   -> Double                 -- freezeTime
-                   -> Color                  -- color
-                   -> Double                 -- radius
-                   -> (V2 Double, V2 Double) -- center
-                   -> [S.Svg]
-arrayElementAppear display waitTime appearTime freezeTime color r (center1, center2) =
-    map (uncurry (arrayElement color))
-      $ concat [ zip (waitFor center1 fps waitTime)
-                     (waitFor (r * 2.0) fps waitTime)
-               , zip (bouncyAppear (center1, center2) fps appearTime)
-                     (bouncyAppear (r * 2.0, r) fps appearTime)
-               , zip (waitFor center2 fps freezeTime)
-                     (waitFor r fps freezeTime)
-               ]
-    where fps = fromIntegral $ displayFps display
-
-allArrayElementsAppear :: Display          -- display
-                       -> Int              -- n
-                       -> Double           -- radius
-                       -> Double           -- appearTime
-                       -> Double           -- freezeTime
-                       -> Color            -- color
-                       -> (Double, Double) -- cy1, cy2
-                       -> [S.Svg]
-allArrayElementsAppear display n r appearTime freezeTime color (cy1, cy2) =
-    parallelCombine
-      $ map (\i -> arrayElementAppear display
-                                      (fromIntegral i * dt)
-                                      appearTime
-                                      (freezeTime + fromIntegral (n - i - 1) * dt)
-                                      color
-                                      r
-                                      ( center1 + V2 ((2 * r + spacing) * fromIntegral i) 0
-                                      , center2 + V2 ((2 * r + spacing) * fromIntegral i) 0
-                                      ))
-            [0 :: Int .. n - 1]
-    where center1 = V2 cx cy1 - V2 offsetX 0
-          center2 = V2 cx cy2 - V2 offsetX 0
-          cx = fromIntegral width * 0.5
-          offsetX = arrayImageWidth * 0.5 - r
+horizontalLineLayout :: Display     -- display
+                     -> Int         -- n
+                     -> Double      -- spacing
+                     -> Double      -- y
+                     -> [V2 Double]
+horizontalLineLayout display n spacing y =
+    map (\i -> V2 (fromIntegral i * spacing + offsetX) y) [0 .. n - 1]
+    where offsetX = fromIntegral width * 0.5 - lineWidth * 0.5
+          lineWidth = (fromIntegral n - 1) * spacing
           width = displayWidth display
-          arrayImageWidth = fromIntegral n * d + fromIntegral (n - 1) * spacing
-          d = 2.0 * r
-          spacing = 100.0
-          -- time for an individual element to appear
-          dt = appearTime / fromIntegral n
-
-arraysAppear :: Display         -- display
-             -> Double          -- appearTime
-             -> Double          -- freezeTime
-             -> [Frame]
-arraysAppear display appearTime freezeTime =
-    map (solidBackground display backgroundColor)
-      $ parallelCombine [ allArrayElementsAppear display n r appearTime freezeTime color1 (-d, cy1)
-                        , allArrayElementsAppear display n r appearTime freezeTime color2 (height + d, cy2)
-                        ]
-    where color1 = "#8dff1e"
-          color2 = "#ff8d1e"
-          cy1 = spacing + r
-          cy2 = height - spacing - r
-          backgroundColor = "#181818"
-          n = 6
-          r = 100.0
-          d = 2 * r
-          spacing = 100.0
-          height = fromIntegral $ displayHeight display
 
 rules :: Display -> [Double] -> [Frame]
 rules display _ =
-    arraysAppear display 0.4 2
+    let firstArray =
+            parallelCombine
+              $ map (\(c1, (c2, (c3, (c4, (c5, i))))) ->
+                     map (\(center, r, color') -> circleElement color' center r) $
+                         concat [ zip3 (waitFor c1 fps (dt * fromIntegral i * 0.25))
+                                       (waitFor r1 fps (dt * fromIntegral i * 0.25))
+                                       (repeat color1)
+                                , zip3 (bouncyAppear (c1, c2) fps dt)
+                                       (bouncyAppear (r1, r2) fps dt)
+                                       (repeat color1)
+                                , zip3 (waitFor c2 fps (2.0 - (dt * fromIntegral i * 0.25)))
+                                       (waitFor r2 fps (2.0 - (dt * fromIntegral i * 0.25)))
+                                       (repeat color1)
+                                , zip3 (bouncyAppear (c2, c3) fps dt)
+                                       (bouncyAppear (r2, r3) fps dt)
+                                       (repeat color2)
+                                , zip3 (waitFor c3 fps 2.0)
+                                       (waitFor r3 fps 2.0)
+                                       (repeat color2)
+                                , zip3 (bouncyAppear (c3, c4) fps dt)
+                                       (bouncyAppear (r3, r2) fps dt)
+                                       (repeat color3)
+                                , zip3 (waitFor c4 fps 2.0)
+                                       (waitFor r3 fps 2.0)
+                                       (repeat color3)
+                                , zip3 (bouncyAppear (c4, c5) fps dt)
+                                       (waitFor r3 fps dt)
+                                       (repeat color3)
+                                ])
+              $ (  zip (horizontalLineLayout display n spacing2 y1)
+                 . zip (horizontalLineLayout display n spacing2 y2)
+                 . zip (repeat (V2 (width * 0.5) y3))
+                 . zip (horizontalLineLayout display n spacing3 y4)
+                 . zip (repeat (V2 (width + r3) y4))) [0 :: Int .. ]
+            where y1 = -r2
+                  y2 = 200.0
+                  y3 = height * 0.40
+                  y4 = height - r3 - 100.0
+        secondArray =
+            parallelCombine
+              $ map (\(c1, (c2, (c3, i))) ->
+                     map (\(center, r, color') -> circleElement color' center r) $
+                         concat [ zip3 (waitFor c1 fps (dt * fromIntegral i * 0.25))
+                                       (waitFor r1 fps (dt * fromIntegral i * 0.25))
+                                       (repeat color3)
+                                , zip3 (bouncyAppear (c1, c2) fps dt)
+                                       (bouncyAppear (r1, r2) fps dt)
+                                       (repeat color3)
+                                , zip3 (waitFor c2 fps (2.0 - (dt * fromIntegral i * 0.25)))
+                                       (waitFor r2 fps (2.0 - (dt * fromIntegral i * 0.25)))
+                                       (repeat color3)
+                                -- Waiting for merge of the first array
+                                , zip3 (waitFor c2 fps dt)
+                                       (waitFor r2 fps dt)
+                                       (repeat color3)
+                                , zip3 (waitFor c2 fps 2.0)
+                                       (waitFor r2 fps 2.0)
+                                       (repeat color3)
+                                --
+                                , zip3 (bouncyAppear (c2, c3) fps dt)
+                                       (bouncyAppear (r2, r3) fps dt)
+                                       (repeat color3)
+                                ])
+              $ (  zip (horizontalLineLayout display n spacing2 y1)
+                 . zip (horizontalLineLayout display n spacing2 y2)
+                 . zip (horizontalLineLayout display n spacing3 y2)) [0 :: Int .. ]
+            where y1 = height + r2
+                  y2 = height - r3 - 100.0
+    in map (solidBackground display backgroundColor)
+         $ parallelCombine [ firstArray
+                           , secondArray
+                           ]
+    where backgroundColor = "#181818"
+          spacing2 = d2 + 100.0
+          spacing3 = d3 + 100.0
+          r1 = 50.0
+          r2 = 100.0
+          r3 = 120.0
+          d2 = 2.0 * r2
+          d3 = 2.0 * r3
+          fps = fromIntegral $ displayFps display
+          width = fromIntegral $ displayWidth display
+          height = fromIntegral $ displayHeight display
+          n = 5
+          dt = 0.3
+          color1 = "#8dff1e"
+          color2 = "#1eff8d"
+          color3 = "#ff8d8d"

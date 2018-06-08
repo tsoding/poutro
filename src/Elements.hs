@@ -46,3 +46,14 @@ solidBackground display color inner =
              ]
     where w = displayWidth display
           h = displayHeight display
+
+circleElement :: String          -- color
+              -> V2 Double       -- center
+              -> Double          -- radius
+              -> S.Svg
+circleElement color (V2 cx cy) r =
+    S.circle
+      ! A.cx (fromString $ show cx)
+      ! A.cy (fromString $ show cy)
+      ! A.r (fromString $ show r)
+      ! A.style (fromString $ printf "fill:%s" color)
