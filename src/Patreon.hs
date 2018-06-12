@@ -27,8 +27,7 @@ patronNames patrons aliases =
     map (patronAlias aliases) $
     sortBy (flip compare `on` patronLifetime) $
     sortBy (compare `on` patronAlias aliases) $
-    filter (\patron -> patronLifetime patron > 0.0
-                       && patronStatus patron == "Ok"
+    filter (\patron -> patronStatus patron == "Ok"
                        && patronGavePermission patron aliases)
            patrons
 
