@@ -31,7 +31,9 @@ patronNames patrons aliases =
                        && patronGavePermission patron aliases)
            patrons
 
-patronNamesFromFiles :: FilePath -> FilePath -> IO [T.Text]
+patronNamesFromFiles :: FilePath -- patronsFilePath
+                     -> FilePath -- aliasesFilePath
+                     -> IO [T.Text]
 patronNamesFromFiles patronsFilePath aliasesFilePath =
     do patrons <- readPatronsFromCsv patronsFilePath
        aliases <- readAliasesFromJson aliasesFilePath
