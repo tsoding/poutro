@@ -17,6 +17,7 @@ mainWithArgs (outputFolder:patronsFile:aliasesFile:_) = do
   names   <- patronNamesFromFiles patronsFile aliasesFile
   frames  <- return $ outro display names
 
+  print names
   saveVideoToFolder display outputFolder frames
 mainWithArgs _ = error "Usage: ./poutro <output-folder> <patrons.csv> <aliases.json>"
 
