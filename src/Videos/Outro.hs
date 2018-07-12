@@ -15,7 +15,7 @@ import           Layouts
 import           V2
 
 timehopEvents :: [Double]
-timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241, 241]
+timehopEvents = map (* (1.0 / 30.0)) [1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241, 241, 241]
 
 nameSlots :: Display            -- display
           -> [(V2 Double, V2 Double)]
