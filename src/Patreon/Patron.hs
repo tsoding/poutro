@@ -19,7 +19,7 @@ instance FromField Dollars where
                        _ -> mempty
 
 data Patron = Patron { patronEmail :: !T.Text
-                     -- TODO: patronStatus is not type safe
+                     -- TODO(#25): patronStatus is not type safe
                      , patronStatus :: !T.Text
                      , patronLifetime :: !Dollars
                      } deriving Show
