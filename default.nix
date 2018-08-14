@@ -1,6 +1,5 @@
-with import <nixpkgs> {}; {
-    PoutroEnv = stdenv.mkDerivation {
-        name = "PoutroEnv";
-        buildInputs = [ ghc stack cabal-install imagemagick ffmpeg ];
-    };
+with import <nixpkgs> {};
+
+haskellPackages.developPackage {
+  root = ./.;
 }
