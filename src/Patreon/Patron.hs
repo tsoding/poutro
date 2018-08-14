@@ -7,7 +7,7 @@ import qualified Data.Text as T
 import qualified Data.Vector as V
 import           Text.Read
 
--- TODO: Using Double from patronLifetime is not reliable. Integer multiple of 100 is more accurate.
+-- TODO(#24): Using Double from patronLifetime is not reliable. Integer multiple of 100 is more accurate.
 newtype Dollars = Dollars { toDouble :: Double } deriving (Show, Ord, Eq)
 
 instance FromField Dollars where
