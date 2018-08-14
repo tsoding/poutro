@@ -77,7 +77,7 @@ executable poutro
   
   -- Other library packages from which modules are imported.
   build-depends:       aeson
-                     , base >=4.9 && <4.10
+                     , base
                      , blaze-svg
                      , bytestring
                      , cassava
