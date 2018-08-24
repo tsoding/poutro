@@ -4,13 +4,24 @@
 
 ## Quick Start
 
+## NixOS
+
+```console
+$ nix-shell
+$ cabal configure
+$ cabal build
+$ cabal exec hlint .
+$ cabal run out/ patrons.csv aliases.json
+$ ./render-video.sh
+```
+
+## Stack
+
 Install [stack](https://docs.haskellstack.org/en/stable/README/) if you're not using [NixOS]
 
 ```console
-$ nix-shell               # if you are using NixOS
 $ stack build             # to build the project
 $ stack exec hlint src/   # to check the code with HLint
-$ mkdir out/
 $ stack exec poutro out/ patrons.csv aliases.json
 $ ./render-video.sh
 ```
