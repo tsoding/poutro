@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 module Patreon.Patron where
 
 import qualified Data.ByteString.Lazy as BS
@@ -11,12 +12,11 @@ import           Text.Read
 newtype Dollars = Dollars { toDouble :: Double } deriving (Show, Ord, Eq)
 
 instance FromField Dollars where
-    parseField f = parseField f >>= \s ->
-                     case s of
-                       '$':rest -> case readMaybe rest of
-                                     Just number -> pure $ Dollars number
-                                     _ -> mempty
-                       _ -> mempty
+    parseField f = parseField f >>= \case
+        '$':rest -> case readMaybe rest of
+                      Just number -> pure $ Dollars number
+                      _ -> mempty
+        _ -> mempty
 
 data Patron = Patron { patronEmail :: !T.Text
                      -- TODO(#25): patronStatus is not type safe
