@@ -11,7 +11,7 @@ aliasByPatron :: Patron -> [Alias] -> Alias
 aliasByPatron patron aliases =
     case filter (\alias -> aliasEmail alias == patronEmail patron) aliases of
       [alias] -> alias
-      []      -> error "Couldn't find alias for patron"
+      []      -> error $ T.unpack $ T.concat ["Couldn't find alias for patron ", patronEmail patron]
       _       -> error "There are several patrons with the same email"
 
 patronGavePermission :: Patron -> [Alias] -> Bool
