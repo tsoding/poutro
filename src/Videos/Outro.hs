@@ -15,7 +15,7 @@ import           Layouts
 import           V2
 
 timehopEvents :: [Double]
-timehopEvents = map (* (1.0 / 30.0)) [1, 1, 1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241, 244, 247, 250, 253]
+timehopEvents = map (* (1.0 / 30.0)) [1, 1, 1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241,262,270,300,312,323,330,361,383,390,420,432,443,450]
 
 nameSlots :: Display            -- display
           -> [(V2 Double, V2 Double)]
@@ -26,8 +26,8 @@ nameSlots display = concat [ zip (verticalLineLayout display rows spacing leftOf
                            , zip (verticalLineLayout display rows spacing rightOffscreen)
                                  (verticalLineLayout display rows spacing rightColumn)
                            ]
-    where rows = 6
-          spacing = 100.0
+    where rows = 8
+          spacing = 80.0
           leftOffscreen = -500
           rightOffscreen = width
           leftColumn = 300.0
@@ -50,7 +50,7 @@ outro display names =
           elements = [ (supportedBy, (V2 660 0, V2 660 130))
                      , (textElement "via" 100, (V2 (-450) 1000, V2 750 1000))
                      , (patreonLogo, (V2 1920 925, V2 950 925))]
-                       ++ zip (map (`textElement` 60) names) (nameSlots display)
-          duration = 8.5
+                       ++ zip (map (`textElement` 50) names) (nameSlots display)
+          duration = 8.5 * 2
           supportedBy = textElement "Supported by" 100
           backgroundColor = "#181818"
