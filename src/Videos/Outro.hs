@@ -26,7 +26,7 @@ nameSlots display = concat [ zip (verticalLineLayout display rows spacing leftOf
                            , zip (verticalLineLayout display rows spacing rightOffscreen)
                                  (verticalLineLayout display rows spacing rightColumn)
                            ]
-    where rows = 8
+    where rows = 9
           spacing = 80.0
           leftOffscreen = -500
           rightOffscreen = width
