@@ -15,24 +15,34 @@ import           Layouts
 import           V2
 
 timehopEvents :: [Double]
-timehopEvents = map (* (1.0 / 30.0)) [1, 1, 1, 22, 30, 60, 72, 83, 90, 121, 143, 150, 180, 192, 203, 210, 241,262,270,300,312,323,330,361,383,390,420,432,443,450]
+timehopEvents = map (* (1.0 / 30.0)) [1, 1, 1,
+                                      22,  30,  60,  72,  83,  90,  121, 143, 150, 180, 192, 203, 210,
+                                      241, 262, 270, 300, 312, 323, 330, 361, 383, 390, 420, 432, 443,
+                                      450, 453]
 
 nameSlots :: Display            -- display
           -> [(V2 Double, V2 Double)]
 nameSlots display = concat [ zip (verticalLineLayout display rows spacing leftOffscreen)
                                  (verticalLineLayout display rows spacing leftColumn)
-                           , zip (map (+ V2 0.0 height) $ verticalLineLayout display rows spacing middleColumn)
-                                 (verticalLineLayout display rows spacing middleColumn)
+                           , zip (map (+ V2 0.0 height) $ verticalLineLayout display rows spacing middleColumn1)
+                                 (verticalLineLayout display rows spacing middleColumn1)
+                           , zip (map (+ V2 0.0 height) $ verticalLineLayout display rows spacing middleColumn2)
+                                 (verticalLineLayout display rows spacing middleColumn2)
                            , zip (verticalLineLayout display rows spacing rightOffscreen)
                                  (verticalLineLayout display rows spacing rightColumn)
                            ]
-    where rows = 9
+    where rows = 7
           spacing = 80.0
+
           leftOffscreen = -500
+          leftColumn = 100.0
+
           rightOffscreen = width
-          leftColumn = 300.0
-          middleColumn = width * 0.5 - 140.0
-          rightColumn = width - 600.0
+          rightColumn = width - 500.0
+
+          middleColumn1 = width * 0.5 - 500.0
+          middleColumn2 = width * 0.5 - 60.0
+
           width = fromIntegral $ displayWidth display
           height = fromIntegral $ displayHeight display
 
